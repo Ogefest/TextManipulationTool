@@ -5,75 +5,75 @@ import (
 	"strings"
 )
 
-func Replace(line string, params []string) CommandResult {
+func Replace(input *ParamDefinition, params []string) CommandResult {
 	var from = params[0]
 	var to = params[1]
 
 	return CommandResult{
 		StopProcessing: false,
-		Result:         strings.Replace(line, from, to, -1),
+		Result:         strings.Replace(input.line, from, to, -1),
 	}
 }
 
-func Filter(line string, params []string) CommandResult {
-	c := strings.Contains(line, params[0])
+func Filter(input *ParamDefinition, params []string) CommandResult {
+	c := strings.Contains(input.line, params[0])
 
 	return CommandResult{
 		StopProcessing: !c,
-		Result:         line,
+		Result:         input.line,
 	}
 }
 
-func Lower(line string, params []string) CommandResult {
+func Lower(input *ParamDefinition, params []string) CommandResult {
 	return CommandResult{
 		StopProcessing: false,
-		Result:         strings.ToLower(line),
+		Result:         strings.ToLower(input.line),
 	}
 }
 
-func Upper(line string, params []string) CommandResult {
+func Upper(input *ParamDefinition, params []string) CommandResult {
 	return CommandResult{
 		StopProcessing: false,
-		Result:         strings.ToUpper(line),
+		Result:         strings.ToUpper(input.line),
 	}
 }
 
-func Title(line string, params []string) CommandResult {
+func Title(input *ParamDefinition, params []string) CommandResult {
 	return CommandResult{
 		StopProcessing: false,
-		Result:         strings.ToTitle(line),
+		Result:         strings.ToTitle(input.line),
 	}
 }
 
-func Trim(line string, params []string) CommandResult {
+func Trim(input *ParamDefinition, params []string) CommandResult {
 	return CommandResult{
 		StopProcessing: false,
-		Result:         strings.TrimSpace(line),
+		Result:         strings.TrimSpace(input.line),
 	}
 }
 
-func Duplicate(line string, params []string) CommandResult {
+func Duplicate(input *ParamDefinition, params []string) CommandResult {
 	return CommandResult{
 		StopProcessing: false,
-		Result:         line + "\n" + line,
+		Result:         input.line + "\n" + input.line,
 	}
 }
 
-func Prefix(line string, params []string) CommandResult {
+func Prefix(input *ParamDefinition, params []string) CommandResult {
 	return CommandResult{
 		StopProcessing: false,
-		Result:         params[0] + line,
+		Result:         params[0] + input.line,
 	}
 }
 
-func Suffix(line string, params []string) CommandResult {
+func Suffix(input *ParamDefinition, params []string) CommandResult {
 	return CommandResult{
 		StopProcessing: false,
-		Result:         params[0] + line,
+		Result:         params[0] + input.line,
 	}
 }
 
-func Cut(line string, params []string) CommandResult {
+func Cut(input *ParamDefinition, params []string) CommandResult {
 
 	lines := strings.Split(params[0], ":")
 
@@ -81,7 +81,7 @@ func Cut(line string, params []string) CommandResult {
 	var to int
 
 	if lines[1] == "" {
-		to = len(line)
+		to = len(input.line)
 	} else {
 		to, _ = strconv.Atoi(lines[1])
 	}
@@ -91,7 +91,7 @@ func Cut(line string, params []string) CommandResult {
 	} else {
 		from, _ = strconv.Atoi(lines[0])
 	}
-	runes := []rune(line)
+	runes := []rune(input.line)
 
 	return CommandResult{
 		StopProcessing: false,
