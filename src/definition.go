@@ -53,6 +53,21 @@ func GetDefinitions() map[string]CommandDefinition {
 			NumberOfParams: 1,
 			Function:       Cut,
 		},
+		"columnseparator": CommandDefinition{
+			Command:        "columnseparator",
+			NumberOfParams: 1,
+			Function:       ColumnSeparator,
+		},
+		"columnremove": CommandDefinition{
+			Command:        "columnremove",
+			NumberOfParams: 1,
+			Function:       ColumnRemove,
+		},
+		"columnadd": CommandDefinition{
+			Command:        "columnadd",
+			NumberOfParams: 2,
+			Function:       ColumnAdd,
+		},
 	}
 
 	return result
