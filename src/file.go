@@ -56,6 +56,13 @@ func lineProceed(jobs <-chan string, results chan<- string, wg *sync.WaitGroup) 
 
 	for lineToProceed := range jobs {
 
+		proceedParam := ParamDefinition{
+			line:             lineToProceed,
+			processingString: lineToProceed,
+			columnSeparator:  " ",
+		}
+		// fmt.Println(proceedParam)
+
 		sendResult := true
 
 		for i := 0; i < len(os.Args); i++ {
@@ -67,17 +74,19 @@ func lineProceed(jobs <-chan string, results chan<- string, wg *sync.WaitGroup) 
 
 				i += cmd.NumberOfParams
 
-				callResult := cmd.Function(lineToProceed, paramsToCall)
+				callResult := cmd.Function(&proceedParam, paramsToCall)
 				if callResult.StopProcessing {
 					sendResult = false
 					break
 				}
-				lineToProceed = callResult.Result
+				// lineToProceed = callResult.Result
+				proceedParam.line = callResult.Result
+				// fmt.Println(proceedParam)
 
 			}
 		}
 		if sendResult {
-			results <- lineToProceed
+			results <- proceedParam.line
 		}
 
 	}

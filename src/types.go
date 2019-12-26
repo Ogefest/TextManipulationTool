@@ -1,6 +1,12 @@
 package main
 
-type InternalFunction func(string, []string) CommandResult
+type InternalFunction func(*ParamDefinition, []string) CommandResult
+
+type ParamDefinition struct {
+	line             string
+	processingString string
+	columnSeparator  string
+}
 
 type CommandDefinition struct {
 	Command        string
