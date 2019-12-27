@@ -77,9 +77,7 @@ func lineProceed(jobs <-chan string, results chan<- string, wg *sync.WaitGroup) 
 				paramsToCall := os.Args[i+1 : i+cmd.NumberOfParams+1]
 
 				i += cmd.NumberOfParams
-				// fmt.Println(part, proceedParam)
 				cmd.Function(&proceedParam, paramsToCall)
-				// fmt.Println(part, proceedParam)
 				if proceedParam.stopProcessing {
 					sendResult = false
 					break
@@ -94,7 +92,6 @@ func lineProceed(jobs <-chan string, results chan<- string, wg *sync.WaitGroup) 
 
 			}
 		}
-		// fmt.Println(proceedParam)
 
 		if proceedParam.isColumnProcessing {
 			ColumnDeselect(&proceedParam, []string{})
