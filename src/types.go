@@ -1,11 +1,16 @@
 package main
 
-type InternalFunction func(*ParamDefinition, []string) CommandResult
+type InternalFunction func(*ParamDefinition, []string)
 
 type ParamDefinition struct {
-	line             string
-	processingString string
-	columnSeparator  string
+	line                  string
+	temporaryLine         string
+	columnSeparator       string
+	stopProcessing        bool
+	skipCurrentLine       bool
+	isColumnProcessing    bool
+	columnProcessingIndex int
+	callError             error
 }
 
 type CommandDefinition struct {
@@ -14,7 +19,7 @@ type CommandDefinition struct {
 	Function       InternalFunction
 }
 
-type CommandResult struct {
-	StopProcessing bool
-	Result         string
-}
+// type CommandResult struct {
+// 	StopProcessing bool
+// 	// Result         string
+// }

@@ -1,39 +1,33 @@
 package main
 
 import (
+	"errors"
 	"strconv"
 	"strings"
 )
 
-func Column(input *ParamDefinition, params []string) CommandResult {
-	return CommandResult{
-		StopProcessing: false,
-		Result:         params[0] + input.line,
-	}
+func Column(input *ParamDefinition, params []string) {
+	input.line = params[0] + input.line
+
 }
 
-func ColumnSeparator(input *ParamDefinition, params []string) CommandResult {
+func ColumnSeparator(input *ParamDefinition, params []string) {
 	input.columnSeparator = params[0]
-	return CommandResult{
-		StopProcessing: false,
-		Result:         input.line,
-	}
+
 }
 
-func ColumnRemove(input *ParamDefinition, params []string) CommandResult {
+func ColumnRemove(input *ParamDefinition, params []string) {
 
 	cols := strings.Split(input.line, input.columnSeparator)
 
 	columnToRemove, _ := strconv.Atoi(params[0])
 	tmp := append(cols[:columnToRemove-1], cols[columnToRemove:]...)
 
-	return CommandResult{
-		StopProcessing: false,
-		Result:         strings.Join(tmp, input.columnSeparator),
-	}
+	input.line = strings.Join(tmp, input.columnSeparator)
+
 }
 
-func ColumnAdd(input *ParamDefinition, params []string) CommandResult {
+func ColumnAdd(input *ParamDefinition, params []string) {
 
 	cols := strings.Split(input.line, input.columnSeparator)
 
@@ -47,34 +41,55 @@ func ColumnAdd(input *ParamDefinition, params []string) CommandResult {
 
 	result := append(p1, p2...)
 
-	return CommandResult{
-		StopProcessing: false,
-		Result:         strings.Join(result, input.columnSeparator),
-	}
+	input.line = strings.Join(result, input.columnSeparator)
+
 }
 
-// func ColumnSelect(input *ParamDefinition, params []string) CommandResult {
+func ColumnSelect(input *ParamDefinition, params []string) {
 
-// 	cols := strings.Split(input.line, input.columnSeparator)
-// 	colNumber, _ := strconv.Atoi(params[0])
-// 	input.line = input.processingString
-// 	input.processingString = cols[colNumber]
+	if input.isColumnProcessing {
+		ColumnDeselect(input, params)
+	}
 
-// 	return CommandResult{
-// 		StopProcessing: false,
-// 		Result:         input.processingString,
-// 	}
-// }
+	cols := strings.Split(input.line, input.columnSeparator)
+	colNumber, _ := strconv.Atoi(params[0])
+	colNumber--
 
-// func ColumnDeselect(input *ParamDefinition, params []string) CommandResult {
+	input.temporaryLine = input.line
+	input.line = cols[colNumber]
+	input.isColumnProcessing = true
+	input.columnProcessingIndex = colNumber
 
-// 	cols := strings.Split(input.line, input.columnSeparator)
-// 	colNumber, _ := strconv.Atoi(params[0])
-// 	input.line = input.processingString
-// 	input.processingString = cols[colNumber]
+}
 
-// 	return CommandResult{
-// 		StopProcessing: false,
-// 		Result:         input.processingString,
-// 	}
-// }
+func ColumnDeselect(input *ParamDefinition, params []string) {
+
+	cols := strings.Split(input.temporaryLine, input.columnSeparator)
+	cols[input.columnProcessingIndex] = input.line
+
+	input.line = strings.Join(cols, input.columnSeparator)
+	input.isColumnProcessing = false
+	input.columnProcessingIndex = 0
+
+}
+
+func ColumnOrder(input *ParamDefinition, params []string) {
+
+	cols := strings.Split(input.line, input.columnSeparator)
+	orderCols := strings.Split(params[0], ",")
+
+	result := make([]string, len(cols))
+	if len(orderCols) != len(result) {
+		input.callError = errors.New("Number of column order must match number of columns in line")
+		return
+	}
+
+	for index, val := range orderCols {
+		intval, _ := strconv.Atoi(val)
+		intval--
+
+		result[index] = cols[intval]
+	}
+
+	input.line = strings.Join(result, input.columnSeparator)
+}

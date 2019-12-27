@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"os"
 	"sync"
@@ -14,7 +15,7 @@ func FileProcess(filein *os.File, fileout *os.File) {
 
 	wg := new(sync.WaitGroup)
 
-	for w := 0; w < 10; w++ {
+	for w := 0; w < 1; w++ {
 		wg.Add(1)
 		go lineProceed(jobs, result, wg)
 	}
@@ -27,7 +28,7 @@ func FileProcess(filein *os.File, fileout *os.File) {
 			if err == io.EOF {
 				break
 			} else if err != nil {
-				// return err // if you return error
+				fmt.Println("ERR: %s", err)
 			} else {
 				jobs <- string(line)
 			}
@@ -57,11 +58,14 @@ func lineProceed(jobs <-chan string, results chan<- string, wg *sync.WaitGroup) 
 	for lineToProceed := range jobs {
 
 		proceedParam := ParamDefinition{
-			line:             lineToProceed,
-			processingString: lineToProceed,
-			columnSeparator:  " ",
+			line:                  lineToProceed,
+			temporaryLine:         "",
+			columnSeparator:       " ",
+			stopProcessing:        false,
+			isColumnProcessing:    false,
+			skipCurrentLine:       false,
+			columnProcessingIndex: 0,
 		}
-		// fmt.Println(proceedParam)
 
 		sendResult := true
 
@@ -73,18 +77,29 @@ func lineProceed(jobs <-chan string, results chan<- string, wg *sync.WaitGroup) 
 				paramsToCall := os.Args[i+1 : i+cmd.NumberOfParams+1]
 
 				i += cmd.NumberOfParams
-
-				callResult := cmd.Function(&proceedParam, paramsToCall)
-				if callResult.StopProcessing {
+				// fmt.Println(part, proceedParam)
+				cmd.Function(&proceedParam, paramsToCall)
+				// fmt.Println(part, proceedParam)
+				if proceedParam.stopProcessing {
 					sendResult = false
 					break
 				}
-				// lineToProceed = callResult.Result
-				proceedParam.line = callResult.Result
-				// fmt.Println(proceedParam)
+				if proceedParam.skipCurrentLine {
+					break
+				}
+				if proceedParam.callError != nil {
+					fmt.Println("ERR: %s", proceedParam.callError)
+					proceedParam.callError = nil
+				}
 
 			}
 		}
+		// fmt.Println(proceedParam)
+
+		if proceedParam.isColumnProcessing {
+			ColumnDeselect(&proceedParam, []string{})
+		}
+
 		if sendResult {
 			results <- proceedParam.line
 		}

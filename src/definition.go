@@ -38,15 +38,25 @@ func GetDefinitions() map[string]CommandDefinition {
 			NumberOfParams: 1,
 			Function:       Filter,
 		},
+		"if": CommandDefinition{
+			Command:        "if",
+			NumberOfParams: 1,
+			Function:       FIf,
+		},
+		"ifnot": CommandDefinition{
+			Command:        "ifnot",
+			NumberOfParams: 1,
+			Function:       FIfNot,
+		},
 		"prefix": CommandDefinition{
 			Command:        "prefix",
 			NumberOfParams: 1,
-			Function:       Filter,
+			Function:       Prefix,
 		},
 		"suffix": CommandDefinition{
 			Command:        "suffix",
 			NumberOfParams: 1,
-			Function:       Filter,
+			Function:       Suffix,
 		},
 		"cut": CommandDefinition{
 			Command:        "cut",
@@ -67,6 +77,21 @@ func GetDefinitions() map[string]CommandDefinition {
 			Command:        "columnadd",
 			NumberOfParams: 2,
 			Function:       ColumnAdd,
+		},
+		"columnselect": CommandDefinition{
+			Command:        "columnselect",
+			NumberOfParams: 1,
+			Function:       ColumnSelect,
+		},
+		"columndeselect": CommandDefinition{
+			Command:        "columndeselect",
+			NumberOfParams: 0,
+			Function:       ColumnDeselect,
+		},
+		"columnorder": CommandDefinition{
+			Command:        "columnorder",
+			NumberOfParams: 1,
+			Function:       ColumnOrder,
 		},
 	}
 
