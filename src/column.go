@@ -7,8 +7,11 @@ import (
 )
 
 func Column(input *ParamDefinition, params []string) {
-	input.line = params[0] + input.line
+	cols := strings.Split(input.line, input.columnSeparator)
+	colNumber, _ := strconv.Atoi(params[0])
+	colNumber--
 
+	input.line = cols[colNumber]
 }
 
 func ColumnSeparator(input *ParamDefinition, params []string) {

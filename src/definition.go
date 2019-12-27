@@ -63,6 +63,11 @@ func GetDefinitions() map[string]CommandDefinition {
 			NumberOfParams: 1,
 			Function:       Cut,
 		},
+		"column": CommandDefinition{
+			Command:        "column",
+			NumberOfParams: 1,
+			Function:       Column,
+		},
 		"columnseparator": CommandDefinition{
 			Command:        "columnseparator",
 			NumberOfParams: 1,
