@@ -98,7 +98,7 @@ Download [from GitHub release page](https://github.com/Ogefest/TextManipulationT
 
 If you want to build from source
 ```
-git@github.com:Ogefest/TextManipulationTool.git tmt
+git clone git@github.com:Ogefest/TextManipulationTool.git tmt
 cd tmt
 make
 sudo make install
