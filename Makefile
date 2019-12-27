@@ -2,7 +2,7 @@
 GOCMD=go
 GOBUILD=$(GOCMD) build
 GOTEST=$(GOCMD) test
-BINARY_NAME=bin/fmt
+BINARY_NAME=bin/tmt
 BINARY_UNIX=$(BINARY_NAME)_unix
     
 all: build
@@ -15,8 +15,8 @@ build:
 #
 
 install:
-	cp $(BINARY_NAME) /usr/bin/fmt
+	cp $(BINARY_NAME) /usr/bin/tmt
 
 uninstall:
-	rm -f /usr/bin/fmt
+	rm -f /usr/bin/tmt
 
