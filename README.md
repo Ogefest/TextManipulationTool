@@ -93,7 +93,9 @@ All commands are described using example log file.
 
 ## Install
 
-Download [from GitHub release page](https://github.com/Ogefest/TextManipulationTool/releases) and put into `/usr/bin/tmt`
+Download [from GitHub release page](https://github.com/Ogefest/TextManipulationTool/releases) and put `tmt` file into `/usr/bin/tmt`
+
+`sudo cp tmt /usr/bin/tmt`
 
 
 If you want to build from source
