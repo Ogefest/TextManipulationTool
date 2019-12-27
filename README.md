@@ -90,3 +90,20 @@ All commands are described using example log file.
 431340618 app 58918:21.138.232.192
 431340618 usr 52918:111.238.212.12
 ```
+
+## Install
+
+Download [from GitHub release page](https://github.com/Ogefest/TextManipulationTool/releases) and put into `/usr/bin/tmt`
+
+
+If you want to build from source
+```
+git@github.com:Ogefest/TextManipulationTool.git tmt
+cd tmt
+make
+sudo make install
+```
+
+## Contribution
+
+If you have idea for new commands, new features or found bugs let me know using GitHub issues link
