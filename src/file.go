@@ -8,20 +8,22 @@ import (
 	"sync"
 )
 
-func FileProcess(filein *os.File, fileout *os.File) {
+func FileProcess() {
+
+	options := GetRuntimeOptions()
 
 	result := make(chan string, 10)
 	jobs := make(chan string, 10)
 
 	wg := new(sync.WaitGroup)
 
-	for w := 0; w < 1; w++ {
+	for w := 0; w < options.AsyncThreads; w++ {
 		wg.Add(1)
 		go lineProceed(jobs, result, wg)
 	}
 
 	go func() {
-		r := bufio.NewReader(filein)
+		r := bufio.NewReader(options.FileIn)
 		for {
 			// line, err := r.ReadString(10) // 0x0A separator = newline
 			line, _, err := r.ReadLine()
@@ -41,7 +43,7 @@ func FileProcess(filein *os.File, fileout *os.File) {
 		close(result)
 	}()
 
-	w := bufio.NewWriter(fileout)
+	w := bufio.NewWriter(options.FileOut)
 	for str := range result {
 		w.WriteString(str + "\n")
 		w.Flush()

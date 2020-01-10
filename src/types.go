@@ -1,5 +1,7 @@
 package main
 
+import "os"
+
 type InternalFunction func(*ParamDefinition, []string)
 
 type ParamDefinition struct {
@@ -17,4 +19,11 @@ type CommandDefinition struct {
 	Command        string
 	NumberOfParams int
 	Function       InternalFunction
+}
+
+type ApplicationOptions struct {
+	AsyncThreads int
+	FileIn       *os.File
+	FileOut      *os.File
+	Json         string
 }
