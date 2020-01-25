@@ -91,7 +91,6 @@ func lineProceed(jobs <-chan string, results chan<- string, wg *sync.WaitGroup) 
 					fmt.Println("ERR: %s", proceedParam.callError)
 					proceedParam.callError = nil
 				}
-
 			}
 		}
 
