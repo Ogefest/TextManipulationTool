@@ -30,7 +30,7 @@ func FileProcess() {
 			if err == io.EOF {
 				break
 			} else if err != nil {
-				fmt.Println("ERR: %s", err)
+				fmt.Printf("ERR: %s", err)
 			} else {
 				jobs <- string(line)
 			}
@@ -88,7 +88,7 @@ func lineProceed(jobs <-chan string, results chan<- string, wg *sync.WaitGroup) 
 					break
 				}
 				if proceedParam.callError != nil {
-					fmt.Println("ERR: %s", proceedParam.callError)
+					fmt.Printf("ERR: %s", proceedParam.callError)
 					proceedParam.callError = nil
 				}
 			}
